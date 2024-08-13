@@ -71,3 +71,47 @@ print("NO OF MOVES==", ob.solve(matrix))
 ```
 ### 1(B)
 ```
+print("Enter the number of queens")
+N = int(input())
+
+# Create a chessboard
+# NxN matrix with all elements set to 0
+board = [[0]*N for _ in range(N)]
+
+def attack(i, j):
+    # Checking vertically and horizontally
+    for k in range(0, N):
+        if board[i][k] == 1 or board[k][j] == 1:
+            return True
+    
+    # Checking diagonally
+    for k in range(0, N):
+        for l in range(0, N):
+            if (k + l == i + j) or (k - l == i - j):
+                if board[k][l] == 1:
+                    return True
+    return False
+
+def N_queens(n):
+    if n == 0:
+        return True
+    
+    for i in range(0, N):
+        for j in range(0, N):
+            if (not attack(i, j)) and (board[i][j] != 1):
+                board[i][j] = 1
+                
+                if N_queens(n - 1) == True:
+                    return True
+                
+                board[i][j] = 0  # Backtrack
+    
+    return False
+
+# Call the function to solve the N-queens problem
+N_queens(N)
+
+# Print the solution
+for i in board:
+    print(i)
+```
