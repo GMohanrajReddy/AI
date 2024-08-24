@@ -1,3 +1,4 @@
+```https://www.mediafire.com/file/m8s5hc57b5uxj43/DocScanner_12-Aug-2024_8-28%25E2%2580%25AFpm.pdf/file```
 ### 1(A)
 ```
 class Solution:
