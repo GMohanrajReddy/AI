@@ -275,6 +275,91 @@ if __name__ == "__main__":
         print("{0}) {1}".format(i, a.path[i]))
 ```
 ##
+### 3
+```
+MAX, MIN = 1000, -1000
+
+# Returns optimal value for current player (Initially called for root and maximizer)
+def minimax(depth, nodeIndex, maximizingPlayer, values, alpha, beta):
+    # Terminating condition. i.e., leaf node is reached
+    if depth == 3:
+        return values[nodeIndex]
+
+    if maximizingPlayer:
+        best = MIN
+        # Recur for left and right children
+        for i in range(2):
+            val = minimax(depth + 1, nodeIndex * 2 + i, False, values, alpha, beta)
+            best = max(best, val)
+            alpha = max(alpha, best)  # Alpha Beta Pruning
+            if beta <= alpha:
+                break
+        return best
+    else:
+        best = MAX
+        # Recur for left and right children
+        for i in range(2):
+            val = minimax(depth + 1, nodeIndex * 2 + i, True, values, alpha, beta)
+            best = min(best, val)
+            beta = min(beta, best)  # Alpha Beta Pruning
+            if beta <= alpha:
+                break
+        return best
+
+# Driver code
+if __name__ == "__main__":
+    values = [3, 5, 6, 9, 1, 2, 0, -1]
+    print("The optimal value is:", minimax(0, 0, True, values, MIN, MAX))
+
+```
+### 4 
+```
+VARIABLES = ["csc", "maths", "phy", "che", "tam", "eng", "bio"]
+DOMAIN = ["Monday", "Tuesday", "Wednesday"]
+CONSTRAINTS = [
+    ("csc", "maths"),
+    ("csc", "phy"),
+    ("maths", "phy"),
+    ("maths", "che"),
+    ("maths", "tam"),
+    ("phy", "tam"),
+    ("phy", "eng"),
+    ("che", "eng"),
+    ("tam", "eng"),
+    ("tam", "bio"),
+    ("eng", "bio")
+]
+
+def backtrack(assignment):
+    if len(assignment) == len(VARIABLES):
+        return assignment
+
+    var = select_unassigned_variable(assignment)
+    for value in DOMAIN:
+        if consistent(var, value, assignment):
+            assignment[var] = value
+            result = backtrack(assignment)
+            if result is not None:
+                return result
+    return None
+
+def select_unassigned_variable(assignment):
+    for var in VARIABLES:
+        if var not in assignment.keys():
+            return var
+#    return None
+
+def consistent(var, value, assignment):
+    for var1, var2 in CONSTRAINTS:
+    	        if var1 == var or var2 == var:
+    	        	for var3, day in assignment.items():
+    	        			if (var3 == var2 or var3 == var1) and day == value:
+    	        					return False     
+    return True
+solution = backtrack(dict())
+print(solution)
+
+```
 ```
 https://drive.google.com/file/d/1QgXvI0Ntj6xxQgYfYV9eKiJC_GfKESJ7/view?usp=drivesdk
 ```
