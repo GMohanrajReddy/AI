@@ -360,6 +360,186 @@ solution = backtrack(dict())
 print(solution)
 
 ```
+##
+##
+## 5 
+```
+class Literal:
+    def __init__(self, name, sign=True):
+        self.name = str(name)
+        self.sign = sign
+
+    def neg(self):
+        return Literal(self.name, not self.sign)
+
+    def __str__(self):
+        return "-" + self.name if not self.sign else self.name
+
+    def __repr__(self):
+        return self.__str__()
+
+def CNFconvert(KB):
+    storage = []
+    for clause in KB:
+        storage.append([str(lit) for lit in clause])
+    return storage
+
+def VariableSet(KB):
+    variables = set()
+    for clause in KB:
+        for lit in clause:
+            var = lit if lit[0] != '-' else lit[1:]
+            variables.add(var)
+    return list(variables)
+
+def Negativeofx(x):
+    return x[1:] if x[0] == '-' else '-' + x
+
+def pickX(literals, varList):
+    for x in varList:
+        if x not in literals:
+            return x
+    return None
+
+def splitFalseLiterals(cnf, x):
+    holder = []
+    for clause in cnf:
+        if x in clause:
+            new_clause = [lit for lit in clause if lit != x]
+            if new_clause:
+                holder.append(new_clause)
+        else:
+            holder.append(clause)
+    return holder
+
+def splitTrueLiteral(cnf, x):
+    holder = []
+    for clause in cnf:
+        if x not in clause:
+            holder.append(clause)
+    return holder
+
+def unitResolution(clauses):
+    literalholder = {}
+    i = 0
+    while i < len(clauses):
+        clause = clauses[i]
+        if len(clause) == 1:
+            literal = clause[0]
+            if literal[0] == '-':
+                nx = literal[1:]
+                literalholder[nx] = False
+            else:
+                nx = '-' + literal
+                literalholder[literal] = True
+            newClauses = []
+            for item in clauses:
+                if literal not in item:
+                    newClauses.append([lit for lit in item if lit != nx])
+            clauses = newClauses
+            i = 0
+        else:
+            i += 1
+    return literalholder, clauses
+
+def dpll(clauses, varList):
+    literals, cnf = unitResolution(clauses)
+    if not cnf:
+        return literals
+    elif [] in cnf:
+        return "notsatisfiable"
+    x = pickX(literals, varList)
+    if x is None:
+        return "notsatisfiable"
+    varList.remove(x)
+    nx = Negativeofx(x)
+    cnf1 = splitTrueLiteral(cnf, x)
+    cnf2 = splitFalseLiterals(cnf1, nx)
+    result1 = dpll(cnf2, varList)
+    if result1 != "notsatisfiable":
+        result1[x] = True
+        return result1
+    result2 = dpll(cnf2, varList)
+    if result2 != "notsatisfiable":
+        result2[x] = False
+        return result2
+    return "notsatisfiable"
+
+def DPLL(KB):
+    KB = CNFconvert(KB)
+    varList = VariableSet(KB)
+    result = dpll(KB, varList)
+    if result == "notsatisfiable":
+        return False
+    else:
+        # Initialize output with all variables set to 'free'
+        output = {'A': 'free', 'B': 'free', 'C': 'free', 'D': 'free'}
+        
+        # Update output based on result
+        if 'A' in result and result['A']:
+            output['A'] = True
+        
+        if 'B' in result:
+            output['B'] = 'True'
+        
+        # 'C' and 'D' should remain 'free'
+        return [True, output]
+
+# Example usage
+A = Literal('A')
+B = Literal('B')
+C = Literal('C')
+D = Literal('D')
+KB = [{A, B}, {A, C.neg()}, {A.neg(), B, D}]
+print(DPLL(KB))
+```
+##
+## 6a
+```
+database = ["Croaks", "Eat Flies", "Shrimps", "Sings"]
+knowbase = ["Frog", "Canary", "Green", "Yellow"]
+
+def display():
+    print("\n X is \n1..Croaks \n2.Eat Flies \n3.Shrimps \n4.Sings ", end='')
+    print("\n Select One ", end='')
+
+def main():
+    print("*-----Forward Chaining---*", end='')
+    display()
+    
+    try:
+        x = int(input())
+        
+        if x < 1 or x > 4:
+            print("\n-------Invalid Option Selected------", end='')
+            return
+        
+        print("\n X is ", end='')
+        print(database[x - 1], end='')
+        
+        print("\n Color Is \n1.Green \n2.Yellow", end='')
+        print("\n Select Option ", end='')
+        
+        k = int(input())
+        
+        if k == 1 and (x == 1 or x == 2):  # Frog and Green
+            print("Yes, it is ", end='')
+            print(knowbase[0], end='')
+            print(" And Color Is ", end='')
+            print(knowbase[2], end='')
+        elif k == 2 and (x == 3 or x == 4):  # Canary and Yellow
+            print("Yes, it is ", end='')
+            print(knowbase[1], end='')
+            print(" And Color Is ", end='')
+            print(knowbase[3], end='')
+        else:
+            print("\n -- Invalid Knowledge Database", end='')
+    except ValueError:
+        print("\n -- Invalid Input, please enter a number.", end='')
+
+if __name__ == "__main__":
+    main()
+```
 ```
 https://drive.google.com/file/d/1QgXvI0Ntj6xxQgYfYV9eKiJC_GfKESJ7/view?usp=drivesdk
 ```
