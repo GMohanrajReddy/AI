@@ -543,3 +543,53 @@ if __name__ == "__main__":
 ```
 https://drive.google.com/file/d/1QgXvI0Ntj6xxQgYfYV9eKiJC_GfKESJ7/view?usp=drivesdk
 ```
+##
+## 6 B
+```
+database = ["Croaks", "Eat Flies", "Shrimps", "Sings"]
+knowbase = ["Frog", "Canary"]
+color = ["Green", "Yellow"]
+
+def display():
+    print("\n X is \n1. Frog \n2. Canary ", end='')
+    print("\nSelect One: ", end='')
+
+def main():
+    print("*-----Backward--Chaining---*", end='')
+    display()
+    
+    x = int(input())
+    print("\n", end='')
+
+    if x == 1:
+        print("Chance of eating flies: ", end='')
+    elif x == 2:
+        print("Chance of shrimping: ", end='')
+    else:
+        print("\n-------Invalid Option Select------", end='')
+        return
+
+    if x >= 1 and x <= 2:
+        print("\nX is ", end='')
+        print(knowbase[x-1], end='')
+
+        print("\n1. Green \n2. Yellow")
+        k = int(input())
+
+        if k == 1 and x == 1:  # Frog and Green
+            print("Yes, it is in ", end='')
+            print(color[0], end='')
+            print(" color and will ", end='')
+            print(database[0])
+        elif k == 2 and x == 2:  # Canary and Yellow
+            print("Yes, it is in ", end='')
+            print(color[1], end='')
+            print(" color and will ", end='')
+            print(database[1])
+        else:
+            print("\n-- Invalid Knowledge Database --", end='')
+
+if __name__ == "__main__":
+    main()
+```
+##
