@@ -1,4 +1,39 @@
 ```https://www.mediafire.com/file/m8s5hc57b5uxj43/DocScanner_12-Aug-2024_8-28%25E2%2580%25AFpm.pdf/file```
+### 7 
+```
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, confusion_matrix
+from pandas import DataFrame
+
+# Load the Iris dataset
+iris = datasets.load_iris()
+X = iris.data
+Y = iris.target
+
+# Split the data into training and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=1/3)
+
+# Train a Gaussian Naive Bayes classifier model
+model = GaussianNB()
+model.fit(X_train, Y_train)
+
+# Predictions
+model_predictions = model.predict(X_test)
+
+# Print predictions and actual values
+print("\nModel Predictions: ", model_predictions)
+print("\nActual Values: ", Y_test)
+
+# Accuracy of prediction
+accuracy_score_value = accuracy_score(Y_test, model_predictions)
+print("\nAccuracy Score: ", accuracy_score_value)
+
+# Creating a confusion matrix
+cm = confusion_matrix(Y_test, model_predictions)
+print("\nConfusion Matrix: \n", cm)
+```
 ### 1(A)
 ```
 class Solution:
